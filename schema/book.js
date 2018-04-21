@@ -11,8 +11,11 @@ module.exports = {
         {type: 'array', items: {allOf: [{type: 'string'}]
         }}
       ]
-    }
-    // TODO add other fields
+    },
+    series: {type: 'string'},
+    seriesNo: {type: 'string'},
+    description: {type: 'string'},
+    image: {type: 'object'} // FIXME: should probably be images
   }
 }
 
