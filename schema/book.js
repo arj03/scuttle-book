@@ -21,7 +21,19 @@ module.exports = {
     rating: {type: 'string'},
     ratingMax: {type: 'string'},
     ratingType: {type: 'string'},
-    shelve: {type: 'string'}, // FIXME: should probably be shelves
-    genre: {type: 'string'} // FIXME: should probably be genres
+    shelves: {
+      oneOf: [
+        {type: 'string'},
+        {type: 'array', items: {allOf: [{type: 'string'}]
+        }}
+      ]
+    },
+    genres: {
+      oneOf: [
+        {type: 'string'},
+        {type: 'array', items: {allOf: [{type: 'string'}]
+        }}
+      ]
+    }
   }
 }

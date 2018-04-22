@@ -67,7 +67,7 @@ This method doesn't need an sbot connection so can be accessed directly like:
 const isBook = require('scuttle-book/isBook')
 ```
 
-### `book.sync.isBookUpdate(aboutMsg)`
+### `book.sync.isBookUpdate(updateMsg)`
 
 Checks if a given message is a valid book update message, where a 'message' can be either a raw message from the database or `msg.value.content`.
 
@@ -157,30 +157,35 @@ A new book:
   title:       String,
   authors:     String | Array,
   description: String,  (optional)
-  image:       Blob,    (optional)
+  image:       Object,  (optional)
   series:      String,  (optional)
   seriesNo:    Number   (optional)
+  review:      String,  (optional)
+  rating,      String,  (optional)
+  ratingMax,   String,  (optional)
+  ratingType,  String,  (optional)
+  shelves:     String | Array,
+  genres:     String | Array,
 }
 ```
 
 Updating a book :
-(note arj seperated this into amending vs subjective comments, I think this can be done by providing convenience methods)
 ```js
 {
-  type:       'about',
-  about:       MessageId,    // the original book id
+  type:       'bookclubUpdate',
+  updates:     MessageId,    // the original book id
   title:       String,  (optional)
   authors:     String,  (optional)
   description: String,  (optional)
-  image:       Blob,    (optional)
+  image:       Object,  (optional)
   series:      String,  (optional)
   seriesNo:    Number,  (optional)
-  review,
-  rating,      // ??? type
-  ratingMax,   // ??? < I think we should just have an opinion
-  ratingType,  // do we need this? 
-  shelve,
-  genre
+  review:      String,  (optional)
+  rating,      String,  (optional)
+  ratingMax,   String,  (optional)
+  ratingType,  String,  (optional)
+  shelves:     String | Array,
+  genres:     String | Array,
 }
 ```
 

@@ -1,19 +1,11 @@
-const bookSchema = require('./book')
-
-console.log(bookSchema)
-
 module.exports = {
   $schema: 'http://json-schema.org/schema#',
-  "definitions": {
-    book: bookSchema
-  },
   type: 'object',
   properties: {
-    allOf: [
-      { "$ref": "#/definitions/book" },
-      { "properties": { type: {type: 'string', pattern: 'about'} } }
-    ]
+    type: {type: 'string', pattern: 'bookclubUpdate'},
+    updates: {type: 'string'}
+    // plus all of books optional properties
   },
-  required: ["type", "about"]
+  required: ["type", "updates"]
 }
 
