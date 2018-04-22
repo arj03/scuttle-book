@@ -15,7 +15,13 @@ module.exports = {
     series: {type: 'string'},
     seriesNo: {type: 'string'},
     description: {type: 'string'},
-    image: {type: 'object'} // FIXME: should probably be images
+    image: {type: 'object'}, // FIXME: should probably be images
+
+    review: {type: 'string'},
+    rating: {type: 'string'},
+    ratingMax: {type: 'string'},
+    ratingType: {type: 'string'},
+    shelve: {type: 'string'}, // FIXME: should probably be shelves
+    genre: {type: 'string'} // FIXME: should probably be genres
   }
 }
-

@@ -3,7 +3,7 @@ const test = require('tape')
 const isBook = require('../../sync/isBook')()
 // or const isBook = require('../../isBook')
 
-test('isBoot / book schema', t => {
+test('isBook / book schema', t => {
 
   const simpleBook = {
     type: 'bookclub',

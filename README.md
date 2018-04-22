@@ -67,15 +67,15 @@ This method doesn't need an sbot connection so can be accessed directly like:
 const isBook = require('scuttle-book/isBook')
 ```
 
+### `book.sync.isBookUpdate(aboutMsg)`
+
+Checks if a given message is a valid book update message, where a 'message' can be either a raw message from the database or `msg.value.content`.
+
+As with sync.isBook this doesn't need an sbot connection.
 
 ### `book.async.isBookKey(key, cb)`
 
 Looks up a `key` to see if it belongs to a valid book message.
-
-
-### `book.async.isBookUpdate(aboutMsg, cb)`
-
-Check if it's an `about` message, and directed at a valid book message.
 
 ### `book.isBookComment(postMsg, cb)`
 
