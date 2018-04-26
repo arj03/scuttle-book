@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/mixmix/scuttle-book#readme",
   "dependencies": {
-    "is-my-json-valid": "^2.17.1",
+    "ssb-book-schema": "^1.0.1",
     "lodash": "^4.17.4",
     "mutant": "^3.22.1",
     "pull-stream": "^3.6.1",
