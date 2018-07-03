@@ -3,9 +3,8 @@
 A helper module which covers all your ssb `book` related needs from fetching book data, creating new book entries, and validating whether a message is of a standard form.
 
 The parts of this modules are : 
-- queries/ getters
+- queries / getters
 - publishing helpers 
-- schemas
 
 ## Usage
 
@@ -35,19 +34,6 @@ book.async.create(newBook, (err, bookMsg) => {
 
 `opts` (options) an Object with over-ride options for the scuttle-book instance: 
 
-```js
-{
-  // TODO: REVISE THIS
-  aboutWinner: function (sbot, attr, attrOpinions, cb) {
-    // In the event there are differing opinions about a given book attribute, 
-    // this function determines which one 'wins'.
-    // By default, the fallback for attribute is :
-    //    [ myOpinion, publishersOpinion, friendsOpinion, strangersOpinion ] 
-    //    'friendsOpinion' is the most recent opinion by a friend
-  }
-}
-```
-
 ## Instance API
 
 ### `book.async.create(book, cb)`
@@ -55,9 +41,16 @@ book.async.create(newBook, (err, bookMsg) => {
 `book` - an Object which must at least have `title`, `author`. If a book doesn't pass the `isBook` validator, the callback is called with the errors : `cb(errors)`
 
 ### `book.async.update(id, attributes, cb)`
+
+FIXME
+
 ### `book.async.comment(id, text, cb)`
 
+FIXME
+
 ### `book.sync.isBook(bookMsg)`
+
+FIXME: rewrite to use ssb-book-schema
 
 Checks if a given message is a valid book message, where a 'message' can be either a raw message from the database or `msg.value.content`.
 
@@ -67,29 +60,35 @@ This method doesn't need an sbot connection so can be accessed directly like:
 const isBook = require('scuttle-book/isBook')
 ```
 
-### `book.sync.isBookUpdate(updateMsg)`
+### `book.sync.isBookUpdate(msg, cb)`
 
-Checks if a given message is a valid book update message, where a 'message' can be either a raw message from the database or `msg.value.content`.
+FIXME: rewrite to use ssb-book-schema
 
-As with sync.isBook this doesn't need an sbot connection.
+Check if it's a book update, either `about` or `bookclubUpdate` message, and directed at a valid book message.
 
-### `book.async.isBookKey(key, cb)`
+### `book.sync.isBookComment(postMsg, cb)`
 
-Looks up a `key` to see if it belongs to a valid book message.
-
-### `book.isBookComment(postMsg, cb)`
+FIXME: rewrite to use ssb-book-schema
 
 Check if it's a `post` message, and directed at a valid book message.
 
 ### `book.pull.books()`
 
+FIXME
+
 A stream of all books. These are just raw book messages.
 
+FIXME: list of hydrated books maybe?
+
 ### `book.pull.comments()`
+
+FIXME
 
 A stream of comments on books
 
 ### `book.pull.updates()`
+
+FIXME
 
 A stream of updates on books. You can filter this yourself to pull out just ratings, or description updates etc).
 
@@ -140,64 +139,22 @@ where `attributes` and `latestAttributes`:
 
 ### `book.async.get(key, cb)`
 
+FIXME
+
 Similar to `book.obs.get` but an asynchronous method for e.g. backend rendering.
 
 ### `book.obs.shelves()`
 
+FIXME
+
 ### `book.obs.authors()`
 
+FIXME
 
 
 ## Schemas
 
-A new book:
-```js
-{
-  type:       'bookclub',
-  title:       String,
-  authors:     String | Array,
-  description: String,  (optional)
-  image:       Object,  (optional)
-  series:      String,  (optional)
-  seriesNo:    Number   (optional)
-  review:      String,  (optional)
-  rating,      String,  (optional)
-  ratingMax,   String,  (optional)
-  ratingType,  String,  (optional)
-  shelves:     String | Array,
-  genres:     String | Array,
-}
-```
-
-Updating a book :
-```js
-{
-  type:       'bookclubUpdate',
-  updates:     MessageId,    // the original book id
-  title:       String,  (optional)
-  authors:     String,  (optional)
-  description: String,  (optional)
-  image:       Object,  (optional)
-  series:      String,  (optional)
-  seriesNo:    Number,  (optional)
-  review:      String,  (optional)
-  rating,      String,  (optional)
-  ratingMax,   String,  (optional)
-  ratingType,  String,  (optional)
-  shelves:     String | Array,
-  genres:     String | Array,
-}
-```
-
-Commenting on a book:
-```js
-{
-  type: 'post',
-  root: MessageId,    // the original book id
-  text: String,
-  branch: String | Array
-}
-```
+See [ssb-book-schema](https://github.com/arj03/ssb-book-schema/)
 
 ## Development
 
