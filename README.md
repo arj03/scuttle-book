@@ -40,13 +40,15 @@ book.async.create(newBook, (err, bookMsg) => {
 
 `book` - an Object which must at least have `title`, `author`. If a book doesn't pass the `isBook` validator, the callback is called with the errors : `cb(errors)`
 
-### `book.async.update(id, attributes, cb)`
+### `book.async.update(bookId, attributes, cb)`
 
-FIXME
+Validates and posts an update to an existing book.
 
-### `book.async.comment(id, text, cb)`
+### `book.async.comment(updateId, latestCommentId, text, cb)`
 
-FIXME
+Validates and posts a comment.
+
+`latestCommentId` is optional, if not provided, it will be calculated.
 
 ### `book.sync.isBook(bookMsg)`
 
@@ -70,7 +72,7 @@ Check if it's a book update, either `about` or `bookclubUpdate` message, and dir
 
 FIXME: rewrite to use ssb-book-schema
 
-Check if it's a `post` message, and directed at a valid book message.
+Check if it's a `post` message, and directed at a valid book update message.
 
 ### `book.pull.books()`
 

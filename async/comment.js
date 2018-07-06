@@ -1,11 +1,33 @@
-module.exports = function (server) {
-  return function (id, text, cb) {
-    // lookup the book and existing messages attached (just comments?)
-    // calculate the correct branch (using ssb-sort ?)
+const sort = require('ssb-sort')
+const pull = require('pull-stream')
+const isBookComment = require('../sync/isBookComment')()
 
-    // create a correctly formed message
-    // publish it
-    // callback with the error / newly created message
+module.exports = function (server) {
+  return function (updateId, lastCommentId, text, cb) {
+    if (!lastCommentId) {
+      pull(
+        server.backlinks.read({
+          query: [{ $filter: { dest: updateId } }],
+          index: 'DTA' // use asserted timestamps
+        }),
+        pull.collect((err, msgs) => {
+          if (!err) return cb(err)
+
+          lastCommentId = sort(msgs)[msgs.length - 1].key
+        })
+      )
+    }
+
+    let msg = {
+      "type": "post",
+      "root": updateId,
+      "branch": lastCommentId,
+      "text": text
+    }
+
+    if (!isBookComment(msg)) return cb(isBookComment.errors)
+
+    server.publish(msg, cb)
   }
 }
 

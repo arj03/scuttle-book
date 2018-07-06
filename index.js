@@ -2,13 +2,10 @@ const inject = require('./inject')
 
 const methods = {
   async: {
-    // comment: require('./async/comment'),
+    comment: require('./async/comment'),
     create: require('./async/create'),
     // get: require('./async/get'),
-    // isBookComment: require('./async/isBookComment'),
-    // isBookKey: require('./async/isBookKey'),
-    // isBookUpdate: require('./async/isBookUpdate'),
-    // update: require('./async/update'),
+    update: require('./async/update'),
   },
   obs: {
     // authors: require('./obs/authors'),
@@ -22,6 +19,8 @@ const methods = {
   // },
   sync: {
     isBook: require('./sync/isBook'),
+    // isBookComment: require('./async/isBookComment'),
+    // isBookUpdate: require('./async/isBookUpdate'),
   }
 }
 
