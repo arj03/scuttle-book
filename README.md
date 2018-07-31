@@ -52,8 +52,6 @@ Validates and posts a comment.
 
 ### `book.sync.isBook(bookMsg)`
 
-FIXME: rewrite to use ssb-book-schema
-
 Checks if a given message is a valid book message, where a 'message' can be either a raw message from the database or `msg.value.content`.
 
 This method doesn't need an sbot connection so can be accessed directly like:
@@ -64,13 +62,9 @@ const isBook = require('scuttle-book/isBook')
 
 ### `book.sync.isBookUpdate(msg, cb)`
 
-FIXME: rewrite to use ssb-book-schema
-
 Check if it's a book update, either `about` or `bookclubUpdate` message, and directed at a valid book message.
 
 ### `book.sync.isBookComment(postMsg, cb)`
-
-FIXME: rewrite to use ssb-book-schema
 
 Check if it's a `post` message, and directed at a valid book update message.
 

@@ -8,20 +8,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mixmix/scuttle-book.git"
+    "url": "git+https://github.com/arj03/scuttle-book.git"
   },
   "keywords": [
     "scuttlebutt",
     "books"
   ],
-  "author": "mixmix",
+  "author": "mixmix & Anders Rune Jensen",
   "license": "AGPL-3.0",
   "bugs": {
-    "url": "https://github.com/mixmix/scuttle-book/issues"
+    "url": "https://github.com/arj03/scuttle-book/issues"
   },
-  "homepage": "https://github.com/mixmix/scuttle-book#readme",
+  "homepage": "https://github.com/arj03/scuttle-book#readme",
   "dependencies": {
-    "ssb-book-schema": "^1.0.1",
+    "ssb-book-schema": "^1.0.0",
     "lodash": "^4.17.4",
     "mutant": "^3.22.1",
     "pull-stream": "^3.6.1",
