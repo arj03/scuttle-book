@@ -82,8 +82,6 @@ A stream of comments on books
 
 ### `book.pull.updates()`
 
-FIXME
-
 A stream of updates on books. You can filter this yourself to pull out just ratings, or description updates etc).
 
 ### `book.obs.get(key)`
