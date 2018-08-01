@@ -70,8 +70,6 @@ Check if it's a `post` message, and directed at a valid book update message.
 
 ### `book.pull.books()`
 
-FIXME
-
 A stream of all books. These are just raw book messages.
 
 FIXME: list of hydrated books maybe?
