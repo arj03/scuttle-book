@@ -1,6 +1,6 @@
 const sort = require('ssb-sort')
 const pull = require('pull-stream')
-const isBookComment = require('../sync/isBookComment')()
+const { isBookComment } = require('ssb-book-schema')
 
 module.exports = function (server) {
   return function (updateId, lastCommentId, text, cb) {
@@ -19,7 +19,7 @@ module.exports = function (server) {
     }
 
     let msg = {
-      "type": "post",
+      "type": "bookclubComment",
       "root": updateId,
       "branch": lastCommentId,
       "text": text

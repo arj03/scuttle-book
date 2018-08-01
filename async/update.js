@@ -1,4 +1,4 @@
-const isBookUpdate = require('../sync/isBookUpdate')()
+const { isBookUpdate } = require('ssb-book-schema')
 
 module.exports = function (server) {
   return function (bookId, attributes, cb) {
