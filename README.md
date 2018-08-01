@@ -76,8 +76,6 @@ FIXME: list of hydrated books maybe?
 
 ### `book.pull.comments()`
 
-FIXME
-
 A stream of comments on books
 
 ### `book.pull.updates()`

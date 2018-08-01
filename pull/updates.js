@@ -4,12 +4,12 @@ const pullMerge = require('pull-merge')
 module.exports = function (server) {
   return function AllBookUpdatesStream (opts) {
 
-    // old comments based on about
+    // old updates based on about
     const allBooksOpts = {
       query: [{ $filter: { value: { content: { type: 'bookclub' } } } }]
     }
 
-    const oldComments = pull(
+    const oldUpdates = pull(
       server.query.read(allBooksOpts),
       pull.drain(msg => {
         pull(
@@ -25,7 +25,7 @@ module.exports = function (server) {
 
     return pullMerge(
       server.query.read(allBookUpdatesOpts),
-      oldComments
+      oldUpdates
     )
   }
 }
