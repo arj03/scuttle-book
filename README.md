@@ -129,8 +129,6 @@ where `attributes` and `latestAttributes`:
 
 ### `book.async.get(key, cb)`
 
-FIXME
-
 Similar to `book.obs.get` but an asynchronous method for e.g. backend rendering.
 
 ### `book.obs.shelves()`
