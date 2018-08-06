@@ -68,11 +68,11 @@ Check if it's a book update, either `about` or `bookclubUpdate` message, and dir
 
 Check if it's a `post` message, and directed at a valid book update message.
 
-### `book.pull.books()`
+### `book.pull.books(opts, hydrate, loadComments)`
 
-A stream of all books. These are just raw book messages.
-
-FIXME: list of hydrated books maybe?
+A stream of all books. If hydrate is passed, all changes to books will
+also be loaded and the final state of each book returned. Otherwise
+raw book messages are returned.
 
 ### `book.pull.comments()`
 
