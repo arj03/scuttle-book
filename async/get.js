@@ -2,18 +2,18 @@ const pull = require('pull-stream')
 const nest = require('depnest')
 
 module.exports = function (server) {
-  return function (key, cb) {
+  return function (key, loadComments, cb) {
     pull(
       pull.values([key]),
       pull.asyncMap((key, cb) => server.async.get(key, cb)),
-      pull.asyncMap((msg, cb) => hydrate(msg, key, true, (data) => cb(null, data))),
+      pull.asyncMap((msg, cb) => hydrate(msg, key, loadComments, (data) => cb(null, data))),
       pull.drain(cb)
     )
   }
 
   // internal
 
-  function hydrate(msg, key, getComments, cb) {
+  function hydrate(msg, key, loadComments, cb) {
     var book = {
       key,
       common: msg.content,
@@ -27,7 +27,7 @@ module.exports = function (server) {
 
     cb(book)
 
-    applyAmends(book, updatedBook => getComments ? getCommentsOnSubjective(updatedBook, cb) : cb(updatedBook))
+    applyAmends(book, updatedBook => loadComments ? getCommentsOnSubjective(updatedBook, cb) : cb(updatedBook))
   }
 
   function getCommentsOnSubjective(book, cb)

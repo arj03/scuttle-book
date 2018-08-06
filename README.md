@@ -82,7 +82,7 @@ A stream of comments on books
 
 A stream of updates on books. You can filter this yourself to pull out just ratings, or description updates etc).
 
-### `book.obs.get(key)`
+### `book.obs.get(key, loadComments)`
 
 Returns an observeable which provides live updating data for a particular book.
 
@@ -127,7 +127,7 @@ where `attributes` and `latestAttributes`:
 }
 ```
 
-### `book.async.get(key, cb)`
+### `book.async.get(key, loadComments, cb)`
 
 Similar to `book.obs.get` but an asynchronous method for e.g. backend rendering.
 
