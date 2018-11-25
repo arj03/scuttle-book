@@ -56,6 +56,8 @@ A stream of all books. If hydrate is passed, all changes to books will
 also be loaded and the final state of each book returned. Otherwise
 raw book messages are returned.
 
+FIXME: live instead of updates?
+
 ### `book.pull.comments()`
 
 A stream of comments on books
@@ -64,62 +66,38 @@ A stream of comments on books
 
 A stream of updates on books. You can filter this yourself to pull out just ratings, or description updates etc).
 
-### `book.obs.get(key, loadComments)`
-
-Returns an observeable which provides live updating data for a particular book.
-
-```js
-var favBook = book.obs.get('%A4RPANAIiCtO9phwbL0tqk9ta4ltzzZwECZjsH25rqY=.sha256"')
-
-favBook( function listener (newBookState) {
-  // this function is passed the newBookState whenever there's an update
-})
-
-favBook()
-// => get the state right now
-
-```
-
-state has form:
-```js
-// {
-//   key: '%A4RPANAIiCtO9phwbL0tqk9ta4ltzzZwECZjsH25rqY=.sha256',
-//   value: {  },          // the original message content
-//   attributes: {  },     // contains the single 'winning' state for each attr
-//   comments: [ ],        // the collection of replies in the order they were published
-//   latestAttributes: { } // the latest state of each attribute from each peer
-// }
-```
-
-where `attributes` and `latestAttributes`:
-```js
-{
-  title:       String,
-  authors:     String | Array,
-  description: String,
-  image:       Blob,
-  series:      String,
-  seriesNo:    Number,
-  review,
-  rating,      
-  ratingMax,  
-  ratingType,
-  shelve, // this one may not make any sense!
-  genre
-}
-```
+FIXME: other helpers: shelves, authors, users
 
 ### `book.async.get(key, loadComments, cb)`
 
-Similar to `book.obs.get` but an asynchronous method for e.g. backend rendering.
+Gets a reduced state of the 'book as a whole' of the form:
 
-### `book.obs.shelves()`
+``` js
+{
+  key: MessageId,
+  title: String,
+  description: String,
+  authors: [ String, String, ... ],
+  images: [ Image, Image, ... ] // Objects of same form as image property
+  series: String, // the name of the series
+  seriesNo: String, // the book number
 
-FIXME
+  subjective: { FeedId: {
+    review: String,
+    rating: String, // e.g. 4
+    ratingMax: String, // out of, e.g. 5
+    ratingType: String, // text or emoticon
+    shelves: [ String, String, .... ],
+    genres:  [ String, String, .... ]
+    }, ...
+  }
+}
+```
 
-### `book.obs.authors()`
+FIXME:
 
-FIXME
+  heads: [ MessageId, .... ], // most recent message(s) in the document/ thread
+  threads: [ MessageId, ... ] // all backlinks in causal order
 
 
 ## Schemas
