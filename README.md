@@ -50,24 +50,6 @@ Validates and posts a comment.
 
 `latestCommentId` is optional, if not provided, it will be calculated.
 
-### `book.sync.isBook(bookMsg)`
-
-Checks if a given message is a valid book message, where a 'message' can be either a raw message from the database or `msg.value.content`.
-
-This method doesn't need an sbot connection so can be accessed directly like:
-
-```js
-const isBook = require('scuttle-book/isBook')
-```
-
-### `book.sync.isBookUpdate(msg, cb)`
-
-Check if it's a book update, either `about` or `bookclubUpdate` message, and directed at a valid book message.
-
-### `book.sync.isBookComment(postMsg, cb)`
-
-Check if it's a `post` message, and directed at a valid book update message.
-
 ### `book.pull.books(opts, hydrate, loadComments)`
 
 A stream of all books. If hydrate is passed, all changes to books will
