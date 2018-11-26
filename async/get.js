@@ -5,7 +5,7 @@ module.exports = function (server) {
   return function (key, loadComments, cb) {
     pull(
       pull.values([key]),
-      pull.asyncMap((key, cb) => server.async.get(key, cb)),
+      pull.asyncMap((key, cb) => server.get(key, cb)),
       pull.asyncMap((msg, cb) => hydrate(msg, key, loadComments, (data) => cb(null, data))),
       pull.drain(cb)
     )
