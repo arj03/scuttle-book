@@ -11,21 +11,38 @@ const keyOther = ssbKeys.generate()
 Server.use(require('ssb-backlinks'))
 
 const Get = require('../../async/get')
+const Create = require('../../async/create')
+const Update = require('../../async/update')
 
 test('async.get - I publish a book and edit it', t => {
   const server = Server({name: 'test.async.get', keys: keyMe})
   const get = Get(server)
+  const create = Create(server)
+  const update = Update(server)
 
-  const feedMe = server.createFeed(keyMe)
-  const feedOther = server.createFeed(keyOther)
+  const book = { type: 'bookclub', title: 'The Disposessed', authors: 'Ursula Le Guin' }
+  const bookUpdate = { title: 'The Dispossessed', authors: 'Ursula Le Guin' }
 
-  const book = {type: 'bookclub', title: 'The Disposessed', author: 'Ursula Le Guin'}
+  create(book, (err, bookMsg) => {
+    if (err) console.error(err)
 
-  feedMe.add(book, (err, bookMsg) => {
-    const bookKey = bookMsg.key
+    get(bookMsg.key, false, (bookState) => {
+      //console.log(bookState)
+      t.equal(bookState.common.title, book.title, 'title working')
+      t.equal(bookState.common.authors, book.authors, 'authors working')
 
-    get(bookKey, (bookState) => {
-      t.deepEqual(bookState.title, 'The Dispossessed', 'title working')
+      update(bookMsg.key, bookUpdate, (err, bookState) => {
+        if (err) console.error(err)
+
+        get(bookMsg.key, false, (bookState) => {
+          t.equal(bookState.common.title, bookUpdate.title, 'title updates')
+
+          setTimeout(function() {
+            server.close()
+            t.end()
+          }, 100)
+        })
+      })
     })
   })
 })

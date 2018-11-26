@@ -3,6 +3,9 @@ const nest = require('depnest')
 
 module.exports = function (server) {
   return function (key, loadComments, cb) {
+    if (cb === undefined)
+      throw "Please provide callback"
+
     pull(
       pull.values([key]),
       pull.asyncMap((key, cb) => server.get(key, cb)),
@@ -18,14 +21,12 @@ module.exports = function (server) {
       key,
       common: msg.content,
       subjective: {
-        ['OWNID']: { // FIXME?
+        [server.id]: {
           key: '', allKeys: [], rating: '', ratingMax: '', ratingType: '',
           review: '', shelve: '', genre: '', comments: []
         }
       }
     }
-
-    cb(book)
 
     applyAmends(book, updatedBook => loadComments ? getCommentsOnSubjective(updatedBook, cb) : cb(updatedBook))
   }
@@ -43,14 +44,12 @@ module.exports = function (server) {
                 server.backlinks.read({
                   query: [ {$filter: { dest: key }} ],
                   index: 'DTA', // use asserted timestamps
-                  live: true // FIXME?
                 }),
                 pull.drain(msg => {
-                  if (msg.sync || ["post", "bookclubComment"].includes(msg.value.content.type)) return
+                  if (msg.sync || !["post", "bookclubComment"].includes(msg.value.content.type)) return
 
                   if (!subj.comments.some(c => c.key == msg.key)) {
                     subj.comments.push(msg.value)
-                    cb(book)
                   }
                 })
               )
@@ -68,10 +67,9 @@ module.exports = function (server) {
       server.backlinks.read({
         query: [ {$filter: { dest: book.key }} ],
         index: 'DTA', // use asserted timestamps
-        live: true // FIXME?
       }),
       pull.drain(msg => {
-        if (msg.sync || ["about", "bookclubUpdate"].includes(msg.value.content.type)) return
+        if (msg.sync || !["about", "bookclubUpdate"].includes(msg.value.content.type)) return
 
         const { rating, ratingMax, ratingType, shelve, genre, review } = msg.value.content
 
@@ -96,6 +94,7 @@ module.exports = function (server) {
         } else
           book.common = Object.assign({}, book.common, msg.value.content)
 
+      }, () => {
         cb(book)
       })
     )
