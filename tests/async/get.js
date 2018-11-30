@@ -1,12 +1,9 @@
 const test = require('tape')
 const Server = require('scuttle-testbot')
 const ssbKeys = require('ssb-keys')
-const { watch } = require('mutant')
-const { isBlob } = require('ssb-ref')
 const pull = require('pull-stream')
 
 const keyMe = ssbKeys.generate()
-const keyOther = ssbKeys.generate()
 
 Server.use(require('ssb-backlinks'))
 
