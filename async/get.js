@@ -38,6 +38,7 @@ module.exports = function (server) {
     if (subjectives.length == 1 && subjectives[0].key == '')
       cb(book)
     else {
+      let reqs = []
       pull(
         pull.values(Object.values(book.subjective)),
         pull.drain(subj => {
@@ -45,6 +46,7 @@ module.exports = function (server) {
             pull(
               pull.values(Object.values(subj.allKeys)),
               pull.drain(key => {
+                reqs.push(key)
                 pull(
                   server.backlinks.read({
                     query: [ {$filter: { dest: key }} ],
@@ -56,7 +58,11 @@ module.exports = function (server) {
                     if (!subj.comments.some(c => c.key == msg.key)) {
                       subj.comments.push(msg.value)
                     }
-                  }, () => cb(book))
+                  }, () => {
+                    reqs.pop()
+                    if (reqs.length == 0)
+                      cb(book)
+                  })
                 )
               })
             )
