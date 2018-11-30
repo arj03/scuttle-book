@@ -37,10 +37,8 @@ test('async.get - I publish a book and edit it', t => {
         get(bookMsg.key, false, (bookState) => {
           t.equal(bookState.common.title, bookUpdate.title, 'title updates')
 
-          setTimeout(function() {
-            server.close()
-            t.end()
-          }, 100)
+          server.close()
+          t.end()
         })
       })
     })
