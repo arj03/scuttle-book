@@ -7,7 +7,7 @@ module.exports = function (server) {
       "updates": bookId
     }, attributes)
 
-    if (!isBookUpdate(msg)) return cb(isBookUpdate.errors)
+    if (!isBookUpdate(msg)) return cb(msg.errors)
 
     server.publish(msg, cb)
   }

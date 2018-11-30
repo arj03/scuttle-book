@@ -33,31 +33,37 @@ module.exports = function (server) {
 
   function getCommentsOnSubjective(book, cb)
   {
-    pull(
-      pull.values(Object.values(book.subjective)),
-      pull.drain(subj => {
-        if (subj.key) {
-          pull(
-            pull.values(Object.values(subj.allKeys)),
-            pull.drain(key => {
-              pull(
-                server.backlinks.read({
-                  query: [ {$filter: { dest: key }} ],
-                  index: 'DTA', // use asserted timestamps
-                }),
-                pull.drain(msg => {
-                  if (msg.sync || !["post", "bookclubComment"].includes(msg.value.content.type)) return
+    let subjectives = Object.values(book.subjective)
 
-                  if (!subj.comments.some(c => c.key == msg.key)) {
-                    subj.comments.push(msg.value)
-                  }
-                })
-              )
-            })
-          )
-        }
-      }, () => cb(book))
-    )
+    if (subjectives.length == 1 && subjectives[0].key == '')
+      cb(book)
+    else {
+      pull(
+        pull.values(Object.values(book.subjective)),
+        pull.drain(subj => {
+          if (subj.key) {
+            pull(
+              pull.values(Object.values(subj.allKeys)),
+              pull.drain(key => {
+                pull(
+                  server.backlinks.read({
+                    query: [ {$filter: { dest: key }} ],
+                    index: 'DTA', // use asserted timestamps
+                  }),
+                  pull.drain(msg => {
+                    if (msg.sync || !["post", "bookclubComment"].includes(msg.value.content.type)) return
+
+                    if (!subj.comments.some(c => c.key == msg.key)) {
+                      subj.comments.push(msg.value)
+                    }
+                  }, () => cb(book))
+                )
+              })
+            )
+          }
+        })
+      )
+    }
   }
 
   function applyAmends(book, cb) {
