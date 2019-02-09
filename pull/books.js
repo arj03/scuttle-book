@@ -1,7 +1,7 @@
 const next = require('pull-next-query')
 const pull = require('pull-stream')
 const paramap = require('pull-paramap')
-const getAsync = require('../../async/get')
+const getAsync = require('../async/get')
 
 module.exports = function (server) {
   return function AllBooksStream (opts, hydrate, loadComments) {
