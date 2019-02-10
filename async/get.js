@@ -9,7 +9,7 @@ module.exports = function (server) {
     pull(
       pull.values([key]),
       pull.asyncMap((key, cb) => server.get(key, cb)),
-      pull.asyncMap((msg, cb) => hydrate(msg, key, loadComments, (data) => cb(null, data))),
+      pull.asyncMap((msg) => hydrate(msg, key, loadComments, cb)),
       pull.drain(cb)
     )
   }
@@ -28,16 +28,23 @@ module.exports = function (server) {
       }
     }
 
-    applyAmends(book, updatedBook => loadComments ? getCommentsOnSubjective(updatedBook, cb) : cb(updatedBook))
+    applyAmends(book, (err, updatedBook) => {
+      if (err) return cb(err)
+
+      if (loadComments)
+        getCommentsOnSubjective(updatedBook, cb)
+      else
+        cb(null, updatedBook)
+    })
   }
 
   function getCommentsOnSubjective(book, cb)
   {
     let subjectives = Object.values(book.subjective)
 
-    if (subjectives.length == 1 && subjectives[0].key == '')
-      cb(book)
-    else {
+    if (subjectives.length == 1 && subjectives[0].key == '') {
+      cb(null, book)
+    } else {
       let reqs = []
       pull(
         pull.values(Object.values(book.subjective)),
@@ -58,10 +65,10 @@ module.exports = function (server) {
                     if (!subj.comments.some(c => c.key == msg.key)) {
                       subj.comments.push(msg.value)
                     }
-                  }, () => {
+                  }, (err) => {
                     reqs.pop()
                     if (reqs.length == 0)
-                      cb(book)
+                      cb(err, book)
                   })
                 )
               })
@@ -106,8 +113,8 @@ module.exports = function (server) {
         } else
           book.common = Object.assign({}, book.common, msg.value.content)
 
-      }, () => {
-        cb(book)
+      }, (err) => {
+        cb(err, book)
       })
     )
   }

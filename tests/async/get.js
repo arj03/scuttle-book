@@ -23,7 +23,7 @@ test('async.get - I publish a book and edit it', t => {
   create(book, (err, bookMsg) => {
     if (err) console.error(err)
 
-    get(bookMsg.key, false, (bookState) => {
+    get(bookMsg.key, false, (err, bookState) => {
       //console.log(bookState)
       t.equal(bookState.common.title, book.title, 'title working')
       t.equal(bookState.common.authors, book.authors, 'authors working')
@@ -31,7 +31,7 @@ test('async.get - I publish a book and edit it', t => {
       update(bookMsg.key, bookUpdate, (err, bookState) => {
         if (err) console.error(err)
 
-        get(bookMsg.key, false, (bookState) => {
+        get(bookMsg.key, false, (err, bookState) => {
           t.equal(bookState.common.title, bookUpdate.title, 'title updates')
 
           server.close()

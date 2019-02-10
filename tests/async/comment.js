@@ -25,13 +25,13 @@ test('async.comment - I publish a book and comment on a rating', t => {
   create(book, (err, bookMsg) => {
     if (err) console.error(err)
 
-    get(bookMsg.key, true, (bookState) => {
+    get(bookMsg.key, true, (err, bookState) => {
       t.ok(true, "loading book with no subjective also works")
         
       update(bookMsg.key, bookRating, (err, updateMsg) => {
         if (err) console.error(err)
 
-        get(bookMsg.key, true, (bookState) => {
+        get(bookMsg.key, true, (err, bookState) => {
           t.ok(true, "loading book with no comments also works")
           
           comment(updateMsg.key, null, 'Oh really?', (err, commentMsg) => {
@@ -40,7 +40,7 @@ test('async.comment - I publish a book and comment on a rating', t => {
             comment(updateMsg.key, commentMsg.key, 'Really', (err, commentMsgAuto) => {
               if (err) console.error(err)
 
-              get(bookMsg.key, true, (bookState) => {
+              get(bookMsg.key, true, (err, bookState) => {
                 t.equal(bookState.common.title, book.title, 'title correct')
                 t.equal(bookState.subjective[keyMe.id].review, bookRating.review, 'review correct')
                 t.equal(bookState.subjective[keyMe.id].comments.length, 2, 'get all comments')
