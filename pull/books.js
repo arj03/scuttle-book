@@ -20,11 +20,13 @@ module.exports = function (server) {
     }
     const _opts = Object.assign({}, defaultOpts, opts)
 
-    if (hydrate)
+    if (hydrate) {
+      const getter = getAsync(server)
       return pull(
         next(server.query.read, _opts),
-        pull.asyncMap((key, cb) => getAsync(key, loadComments, cb))
+        pull.asyncMap((bookMsg, cb) => getter(bookMsg.key, loadComments, cb))
       )
+    }
     else
       return next(server.query.read, _opts)
   }

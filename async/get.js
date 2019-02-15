@@ -1,8 +1,11 @@
 const pull = require('pull-stream')
 const nest = require('depnest')
+const ref = require('ssb-ref')
 
 module.exports = function (server) {
   return function (key, loadComments, cb) {
+    if (!ref.isLink(key)) return cb("Key not a valid reference: " + key)
+
     if (cb === undefined)
       throw "Please provide callback"
 

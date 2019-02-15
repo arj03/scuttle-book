@@ -6,14 +6,15 @@ const pull = require('pull-stream')
 const keyMe = ssbKeys.generate()
 
 Server.use(require('ssb-backlinks'))
+  .use(require('ssb-query'))
 
-const Get = require('../../async/get')
+const Books = require('../../pull/books')
 const Create = require('../../async/create')
 const Update = require('../../async/update')
 
-test('async.get - I publish a book and edit it', t => {
+test('pull.books - get hydrated version', t => {
   const server = Server({name: 'test.async.get', keys: keyMe})
-  const get = Get(server)
+  const allBooks = Books(server)
   const create = Create(server)
   const update = Update(server)
 
@@ -23,21 +24,19 @@ test('async.get - I publish a book and edit it', t => {
   create(book, (err, bookMsg) => {
     if (err) console.error(err)
 
-    get(bookMsg.key, false, (err, bookState) => {
-      //console.log(bookState)
-      t.equal(bookState.common.title, book.title, 'title working')
-      t.equal(bookState.common.authors, book.authors, 'authors working')
+    update(bookMsg.key, bookUpdate, (err, bookState) => {
+      if (err) console.error(err)
 
-      update(bookMsg.key, bookUpdate, (err, bookState) => {
-        if (err) console.error(err)
-
-        get(bookMsg.key, false, (err, bookState) => {
-          t.equal(bookState.common.title, bookUpdate.title, 'title updates')
+      pull(
+        allBooks(null, true, false),
+        pull.drain((book) => {
+          t.equal(book.common.title, bookUpdate.title, 'title updates')
 
           server.close()
           t.end()
         })
-      })
+      )
     })
   })
 })
+
