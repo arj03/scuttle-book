@@ -24,7 +24,10 @@ module.exports = function (server) {
       const getter = getAsync(server)
       return pull(
         next(server.query.read, _opts),
-        pull.asyncMap((bookMsg, cb) => getter(bookMsg.key, loadComments, cb))
+        pull.asyncMap((bookMsg, cb) => getter(bookMsg.key, loadComments, (err, book) => {
+          book.msg = bookMsg
+          cb(err, book)
+        }))
       )
     }
     else
