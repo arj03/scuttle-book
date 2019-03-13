@@ -64,6 +64,7 @@ module.exports = function (server) {
                   }),
                   pull.drain(msg => {
                     if (msg.sync || !["post", "bookclubComment"].includes(msg.value.content.type)) return
+                    if (msg.value.content.root == book.key) return // posts directly on book
 
                     if (!subj.comments.some(c => c.key == msg.key)) {
                       subj.comments.push(msg.value)
