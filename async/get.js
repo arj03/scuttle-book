@@ -104,6 +104,7 @@ module.exports = function (server) {
         if (rating || ratingMax || ratingType || shelve || genre || review) {
           book.subjective[msg.value.author] = {
             key: msg.key,
+            timestamp: msg.timestamp,
             allKeys,
             rating,
             ratingMax,
