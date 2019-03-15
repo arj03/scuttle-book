@@ -6,7 +6,6 @@ const getAsync = require('../async/get')
 module.exports = function (server) {
   return function AllBooksStream (opts, hydrate, loadComments) {
     const defaultOpts = {
-      limit: 100,
       query: [{
         $filter: {
           value: {
@@ -24,10 +23,10 @@ module.exports = function (server) {
       const getter = getAsync(server)
       return pull(
         next(server.query.read, _opts),
-        pull.asyncMap((bookMsg, cb) => getter(bookMsg.key, loadComments, (err, book) => {
+        paramap((bookMsg, cb) => getter(bookMsg.key, loadComments, (err, book) => {
           book.msg = bookMsg
           cb(err, book)
-        }))
+        }), 16)
       )
     }
     else
