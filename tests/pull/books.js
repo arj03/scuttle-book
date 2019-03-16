@@ -18,6 +18,7 @@ test('pull.books - get hydrated version', t => {
   const create = Create(server)
   const update = Update(server)
 
+  // FIXME: confusing that create needs a type, but update does not
   const book = { type: 'bookclub', title: 'The Disposessed', authors: 'Ursula Le Guin' }
   const bookUpdate = { title: 'The Dispossessed', authors: 'Ursula Le Guin' }
 
