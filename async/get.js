@@ -22,7 +22,7 @@ module.exports = function (server) {
   function hydrate(msg, key, loadComments, cb) {
     var book = {
       key,
-      common: msg.content,
+      common: Object.assign({}, msg.content, { images: msg.content.image }),
       subjective: {
         [server.id]: {
           key: '', allKeys: [], rating: '', ratingMax: '', ratingType: '',
