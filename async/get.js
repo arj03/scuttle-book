@@ -26,7 +26,7 @@ module.exports = function (server) {
       subjective: {
         [server.id]: {
           key: '', allKeys: [], rating: '', ratingMax: '', ratingType: '',
-          review: '', shelve: '', genre: '', comments: []
+          review: '', shelve: '', comments: []
         }
       }
     }
@@ -102,7 +102,7 @@ module.exports = function (server) {
         let allKeys = allAuthorKeys[msg.value.author]
         allKeys.push(msg.key)
 
-        if (rating || ratingMax || ratingType || shelve || genre || review) {
+        if (rating || ratingMax || ratingType || shelve || review) {
           book.subjective[msg.value.author] = {
             key: msg.key,
             timestamp: msg.timestamp,
@@ -111,12 +111,14 @@ module.exports = function (server) {
             ratingMax,
             ratingType,
             shelve,
-            genre,
             review,
             comments: []
           }
-        } else
+        } else {
+          if (genre) // new name
+            book.common.genres = genre
           book.common = Object.assign({}, book.common, msg.value.content)
+        }
 
       }, (err) => {
         cb(err, book)
