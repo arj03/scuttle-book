@@ -28,7 +28,8 @@ module.exports = function (server) {
           key: '', allKeys: [], rating: '', ratingMax: '', ratingType: '',
           review: '', shelve: '', comments: []
         }
-      }
+      },
+      readers: [msg.author]
     }
 
     applyAmends(book, (err, updatedBook) => {
@@ -121,6 +122,9 @@ module.exports = function (server) {
         }
 
       }, (err) => {
+        allAuthorKeys[book.readers[0]] = []
+        book.readers = Object.keys(allAuthorKeys)
+
         cb(err, book)
       })
     )
