@@ -23,7 +23,7 @@ module.exports = function (server) {
     var book = {
       key,
       common: Object.assign({}, msg.content, { images: msg.content.image }),
-      subjective: {
+      reviews: {
         [server.id]: {
           key: '', allKeys: [], rating: '', ratingMax: '', ratingType: '',
           review: '', shelve: '', comments: []
@@ -36,26 +36,26 @@ module.exports = function (server) {
       if (err) return cb(err)
 
       if (loadComments)
-        getCommentsOnSubjective(updatedBook, cb)
+        getCommentsOnReviews(updatedBook, cb)
       else
         cb(null, updatedBook)
     })
   }
 
-  function getCommentsOnSubjective(book, cb)
+  function getCommentsOnReviews(book, cb)
   {
-    let subjectives = Object.values(book.subjective)
+    let reviews = Object.values(book.reviews)
 
-    if (subjectives.length == 1 && subjectives[0].key == '') {
+    if (reviews.length == 1 && reviews[0].key == '') {
       cb(null, book)
     } else {
       let reqs = []
       pull(
-        pull.values(Object.values(book.subjective)),
-        pull.drain(subj => {
-          if (subj.key) {
+        pull.values(Object.values(book.reviews)),
+        pull.drain(review => {
+          if (review.key) {
             pull(
-              pull.values(Object.values(subj.allKeys)),
+              pull.values(Object.values(review.allKeys)),
               pull.drain(key => {
                 reqs.push(key)
                 pull(
@@ -67,8 +67,8 @@ module.exports = function (server) {
                     if (msg.sync || !["post", "bookclubComment"].includes(msg.value.content.type)) return
                     if (msg.value.content.root == book.key) return // posts directly on book
 
-                    if (!subj.comments.some(c => c.key == msg.key)) {
-                      subj.comments.push(msg.value)
+                    if (!review.comments.some(c => c.key == msg.key)) {
+                      review.comments.push(msg.value)
                     }
                   }, (err) => {
                     reqs.pop()
@@ -104,7 +104,7 @@ module.exports = function (server) {
         allKeys.push(msg.key)
 
         if (rating || ratingMax || ratingType || shelve || review) {
-          book.subjective[msg.value.author] = {
+          book.reviews[msg.value.author] = {
             key: msg.key,
             timestamp: msg.timestamp,
             allKeys,

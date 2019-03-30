@@ -41,7 +41,7 @@ test('async.old - Mixing old and new style updates and comments', t => {
               server.publish({ type: 'post', text: 'test', root: bookReviewMsg.key, branch: bookReviewMsg.key }, () => {
 
                 get(bookMsg.key, true, (err, bookState) => {
-                  t.equal(bookState.subjective[keyMe.id].comments[0].content.text, 'test', 'old comments are still working')
+                  t.equal(bookState.reviews[keyMe.id].comments[0].content.text, 'test', 'old comments are still working')
 
                   server.close()
                   t.end()
