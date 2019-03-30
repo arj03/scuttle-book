@@ -3,16 +3,16 @@ const Server = require('scuttle-testbot')
 const ssbKeys = require('ssb-keys')
 const pull = require('pull-stream')
 
-const keyMe = ssbKeys.generate()
-
-Server.use(require('ssb-backlinks'))
-  .use(require('ssb-query'))
-
-const Books = require('../../pull/books')
-const Create = require('../../async/create')
-const Update = require('../../async/update')
-
 test('pull.books - test genre from v1', t => {
+  const keyMe = ssbKeys.generate()
+
+  Server.use(require('ssb-backlinks'))
+    .use(require('ssb-query'))
+
+  const Books = require('../../pull/books')
+  const Create = require('../../async/create')
+  const Update = require('../../async/update')
+
   const server = Server({name: 'test.async.get', keys: keyMe})
   const allBooks = Books(server)
   const create = Create(server)

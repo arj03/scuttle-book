@@ -3,15 +3,15 @@ const Server = require('scuttle-testbot')
 const ssbKeys = require('ssb-keys')
 const pull = require('pull-stream')
 
-const keyMe = ssbKeys.generate()
-
-Server.use(require('ssb-backlinks'))
-
-const Get = require('../../async/get')
-const Create = require('../../async/create')
-const Update = require('../../async/update')
-
 test('async.old - Mixing old and new style updates and comments', t => {
+  const keyMe = ssbKeys.generate()
+
+  Server.use(require('ssb-backlinks'))
+
+  const Get = require('../../async/get')
+  const Create = require('../../async/create')
+  const Update = require('../../async/update')
+
   const server = Server({name: 'test.async.old', keys: keyMe})
   const get = Get(server)
   const create = Create(server)
