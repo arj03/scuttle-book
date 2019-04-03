@@ -22,7 +22,7 @@ module.exports = function (server) {
   function hydrate(msg, key, loadComments, cb) {
     var book = {
       key,
-      common: Object.assign({}, msg.content, { images: msg.content.image }),
+      common: msg.content,
       reviews: {
         [server.id]: {
           key: '', allKeys: [], rating: '', ratingMax: '', ratingType: '',
@@ -31,6 +31,9 @@ module.exports = function (server) {
       },
       readers: [msg.author]
     }
+
+    if (msg.content.image)
+      book.common.images = msg.content.image
 
     applyAmends(book, (err, updatedBook) => {
       if (err) return cb(err)
