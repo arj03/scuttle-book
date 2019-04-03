@@ -1,6 +1,6 @@
 {
   "name": "scuttle-book",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "a scuttlebutt helper for all book related messages",
   "main": "index.js",
   "scripts": {
