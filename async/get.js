@@ -26,7 +26,7 @@ module.exports = function (server) {
       reviews: {
         [server.id]: {
           key: '', allKeys: [], rating: '', ratingMax: '', ratingType: '',
-          review: '', shelve: '', comments: []
+          review: '', shelves: '', comments: []
         }
       },
       readers: [msg.author]
@@ -95,7 +95,7 @@ module.exports = function (server) {
       pull.drain(msg => {
         if (msg.sync || !["about", "bookclubUpdate"].includes(msg.value.content.type)) return
 
-        const { rating, ratingMax, ratingType, shelve, genre, review } = msg.value.content
+        const { rating, ratingMax, ratingType, shelves, shelve, genre, review } = msg.value.content
 
         if (!allAuthorKeys[msg.value.author])
           allAuthorKeys[msg.value.author] = []
@@ -103,7 +103,7 @@ module.exports = function (server) {
         let allKeys = allAuthorKeys[msg.value.author]
         allKeys.push(msg.key)
 
-        if (rating || ratingMax || ratingType || shelve || review) {
+        if (rating || ratingMax || ratingType || shelves || shelve || review) {
           book.reviews[msg.value.author] = {
             key: msg.key,
             timestamp: msg.timestamp,
@@ -111,7 +111,7 @@ module.exports = function (server) {
             rating,
             ratingMax,
             ratingType,
-            shelve,
+            shelves: shelve || shelves,
             review,
             comments: []
           }
