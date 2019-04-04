@@ -11,8 +11,6 @@ module.exports = function (server) {
       "text": text
     }
 
-    if (!isBookComment(msg)) return cb(msg.errors)
-
     server.publish(msg, cb)
   }
 
