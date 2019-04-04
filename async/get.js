@@ -71,7 +71,7 @@ module.exports = function (server) {
                     if (msg.value.content.root == book.key) return // posts directly on book
 
                     if (!review.comments.some(c => c.key == msg.key)) {
-                      review.comments.push(msg.value)
+                      review.comments.push(msg)
                     }
                   }, (err) => {
                     reqs.pop()

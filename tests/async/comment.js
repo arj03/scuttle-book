@@ -45,8 +45,8 @@ test('async.comment - I publish a book and comment on a rating', t => {
                 t.equal(bookState.common.title, book.title, 'title correct')
                 t.equal(bookState.reviews[keyMe.id].review, bookRating.review, 'review correct')
                 t.equal(bookState.reviews[keyMe.id].comments.length, 2, 'get all comments')
-                t.equal(bookState.reviews[keyMe.id].comments[0].content.text, 'Oh really?', 'comment 1 is correct')
-                t.equal(bookState.reviews[keyMe.id].comments[1].content.text, 'Really', 'comment 2 is correct')
+                t.equal(bookState.reviews[keyMe.id].comments[0].value.content.text, 'Oh really?', 'comment 1 is correct')
+                t.equal(bookState.reviews[keyMe.id].comments[1].value.content.text, 'Really', 'comment 2 is correct')
 
                 server.close()
                 t.end()
