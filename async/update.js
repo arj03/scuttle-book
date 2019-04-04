@@ -8,6 +8,7 @@ module.exports = function (server) {
     }, attributes)
 
     if (!isBookUpdate(msg)) return cb(msg.errors)
+    delete msg.errors
 
     server.publish(msg, cb)
   }
