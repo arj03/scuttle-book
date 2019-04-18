@@ -26,7 +26,8 @@ module.exports = function (server) {
       pull.collect((err, books) => {
         const bookIds = books.map(book => book.id)
         deferred.resolve(pull.filter((update) => {
-          return bookIds.indexOf(update.value.content.updates) != -1
+          const { updates, rating, review } = update.value.content
+          return bookIds.indexOf(updates) != -1 && (rating || review)
         }))
       })
     )
