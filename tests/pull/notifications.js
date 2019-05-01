@@ -25,6 +25,7 @@ test('pull.notifications - as used in patchbay', t => {
   const book = { type: 'bookclub', title: 'The Disposessed', authors: 'Ursula Le Guin' }
   const myBookReview = { type: 'bookclubUpdate', rating: '4' }
   const otherBookReview = { type: 'bookclubUpdate', rating: '5' }
+  const myReviewComment = { type: 'bookclubComment', text: 'Really?' }
 
   feedMe.add(book, (err, bookMsg) => {
     if (err) console.error(err)
@@ -43,8 +44,23 @@ test('pull.notifications - as used in patchbay', t => {
             t.equal(updates.length, 1, 'only others update')
             t.equal(updates[0].value.author, keyOther.id, 'correct author')
 
-            server.close()
-            t.end()
+            myReviewComment.root = myReviewComment.branch = updateMsg.key
+
+            feedMe.add(myReviewComment, (err, commentMsg) => {
+              if (err) console.error(err)
+
+              pull(
+                notifications(keyOther.id),
+                pull.collect((err, updates) => {
+                  t.equal(updates.length, 1, 'only update')
+                  t.equal(updates[0].value.author, keyMe.id, 'correct author')
+                  t.equal(updates[0].value.content.type, 'bookclubComment', 'the comment')
+
+                  server.close()
+                  t.end()
+                })
+              )
+            })
           })
         )
       })
